@@ -51,7 +51,10 @@ void test_config_output_sets_moder_to_01(void)
 void test_config_input_sets_moder_to_00(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    FAKE_MODER(port) = 0x3u << (9 * 2);
+    gpio_config_input(port, 9);
+    uint32_t field = (FAKE_MODER(port) >> (9 * 2)) & 0x3u;
+    TEST_ASSERT_EQUAL_HEX32(0x0u, field);
 }
 
 /* ----- TODO P2.2 -------------------------------------------------------- *
@@ -63,7 +66,12 @@ void test_config_input_sets_moder_to_00(void)
 void test_config_output_does_not_corrupt_other_pins(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    gpio_config_output(port, 0);
+    gpio_config_output(port, 1);
+    uint32_t pin0_field = (FAKE_MODER(port) >> (0 * 2)) & 0x3u;
+    uint32_t pin1_field = (FAKE_MODER(port) >> (1 * 2)) & 0x3u;
+    TEST_ASSERT_EQUAL_HEX32(0x1u, pin0_field);
+    TEST_ASSERT_EQUAL_HEX32(0x1u, pin1_field);
 }
 
 /* ----- TODO P2.3 -------------------------------------------------------- *
@@ -74,7 +82,11 @@ void test_config_output_does_not_corrupt_other_pins(void)
 void test_read_returns_pin_level_from_idr(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    FAKE_IDR(port) = (1u << 13);
+    int high_pin = gpio_read(port, 13);
+    int low_pin = gpio_read(port,12);
+    TEST_ASSERT_EQUAL_INT(1, high_pin);
+    TEST_ASSERT_EQUAL_INT(0, low_pin);
 }
 
 /* ----- TODO P2.4a ------------------------------------------------------- *
@@ -85,7 +97,9 @@ void test_read_returns_pin_level_from_idr(void)
 void test_write_drives_pin_high_via_bsrr(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    fake_registers_reset();
+    gpio_write(port,7,1);
+    TEST_ASSERT_EQUAL_HEX32(1u << 7,FAKE_BSRR(port));
 }
 
 /* ----- TODO P2.4b ------------------------------------------------------- *
@@ -98,7 +112,9 @@ void test_write_drives_pin_high_via_bsrr(void)
 void test_write_drives_pin_low_via_bsrr(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    fake_registers_reset();
+    gpio_write(port,7,0);
+    TEST_ASSERT_EQUAL_HEX32(1u << (7+16), FAKE_BSRR(port));
 }
 
 /*
