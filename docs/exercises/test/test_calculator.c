@@ -39,7 +39,8 @@ void test_calc_add_two_positive_numbers(void)
 void test_calc_add_cancels_to_zero(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    int result = calc_add(-4,4);
+    TEST_ASSERT_EQUAL_INT(0,result);
 }
 
 /* ----- TODO EX1.2 ------------------------------------------------------- *
@@ -48,7 +49,8 @@ void test_calc_add_cancels_to_zero(void)
 void test_calc_subtract_basic(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    int result = calc_subtract(10,3);
+    TEST_ASSERT_EQUAL_INT(7,result);
 }
 
 /* ----- TODO EX1.3 ------------------------------------------------------- *
@@ -58,5 +60,6 @@ void test_calc_subtract_basic(void)
 void test_calc_multiply_negative(void)
 {
     /* YOUR CODE HERE */
-    TEST_IGNORE_MESSAGE("Remove this line and write the test");
+    int result = calc_multiply(-6,7);
+    TEST_ASSERT_EQUAL_INT(-42,result);
 }
